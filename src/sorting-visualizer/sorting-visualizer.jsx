@@ -1,9 +1,14 @@
 import React from 'react';
-import {getMergeSortAnimations} from '../sorting-algorithms/sorting-algorithms.js';
+import {getMergeSortAnimations} from '../sorting-algorithms/merge-sort';
 import './sorting-visualizer.css';
+import {recursiveQuickSort} from "../sorting-algorithms/quick-sort";
+import {COLOUR_CHANGE} from "../sorting-algorithms/constants";
+import {heapSort} from "../sorting-algorithms/heap-sort";
+import {bubbleSort} from "../sorting-algorithms/bubble-sort";
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 1;
+const ANIMATION_SPEED_MEDIUM_MS = 1;
+const ANIMATION_SPEED_FAST_MS = 0.2;
 
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 310;
@@ -41,6 +46,7 @@ export default class SortingVisualizer extends React.Component {
             const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i % 3 !== 2;
             if (isColorChange) {
+                console.log(i);
                 const [barOneIdx, barTwoIdx] = animations[i];
                 const barOneStyle = arrayBars[barOneIdx].style;
                 const barTwoStyle = arrayBars[barTwoIdx].style;
@@ -48,27 +54,90 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
-                }, i * ANIMATION_SPEED_MS);
+                }, i * ANIMATION_SPEED_MEDIUM_MS);
             } else {
                 setTimeout(() => {
                     const [barOneIdx, newHeight] = animations[i];
                     const barOneStyle = arrayBars[barOneIdx].style;
                     barOneStyle.height = `${newHeight}px`;
-                }, i * ANIMATION_SPEED_MS);
+                }, i * ANIMATION_SPEED_MEDIUM_MS);
             }
         }
     }
 
     quickSort() {
-        // TODO
+        console.log(this.state.array);
+        const [animations, arr] = recursiveQuickSort(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const [barOneIdx, barTwoIdx, animationType] = animations[i]
+            if (animationType === COLOUR_CHANGE) {
+                for(let j =0; j < 1; j++) {
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    const barTwoStyle = arrayBars[barTwoIdx].style;
+                    const color = i % 2 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+                    setTimeout(() => {
+                        barOneStyle.backgroundColor = color;
+                        barTwoStyle.backgroundColor = color;
+                    }, i * ANIMATION_SPEED_MEDIUM_MS);
+                }
+            } else {
+                setTimeout(() => {
+                    const [barOneIdx, newHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    barOneStyle.height = `${newHeight}px`;
+                }, i * ANIMATION_SPEED_MEDIUM_MS);
+            }
+        }
     }
 
     heapSort() {
-        // TODO
+        const animations = heapSort(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i % 3 === 0;
+            if (isColorChange) {
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, i * ANIMATION_SPEED_MEDIUM_MS);
+            } else {
+                setTimeout(() => {
+                    const [barOneIdx, newHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                }, i * ANIMATION_SPEED_MEDIUM_MS);
+            }
+        }
+
     }
 
     bubbleSort() {
-        // TODO
+       const animations = bubbleSort(this.state.array);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i % 3 === 0;
+            if (isColorChange) {
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, i * ANIMATION_SPEED_FAST_MS);
+            } else {
+                setTimeout(() => {
+                    const [barOneIdx, newHeight] = animations[i];
+                    const barOneStyle = arrayBars[barOneIdx].style;
+                    barOneStyle.height = `${newHeight}px`;
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                }, i * ANIMATION_SPEED_FAST_MS);
+            }
+        }
     }
 
     // NOTE: This method will only work if your sorting algorithms actually return
@@ -103,7 +172,7 @@ export default class SortingVisualizer extends React.Component {
                 ))}
                 <button onClick={() => this.resetArray()}>Generate New Array</button>
                 <button onClick={() => this.mergeSort()}>Merge Sort</button>
-                <button onClick={() => this.quickSort()}>Quick Sort</button>
+                <button onClick={() => this.quickSort()}>Quick Sort (needs work)</button>
                 <button onClick={() => this.heapSort()}>Heap Sort</button>
                 <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
                 <button onClick={() => this.testSortingAlgorithms()}>
