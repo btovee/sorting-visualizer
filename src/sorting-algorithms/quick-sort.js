@@ -1,11 +1,10 @@
-import {COLOUR_CHANGE, MOVE_ELEMENT} from "./constants";
+
 
 export function recursiveQuickSort(arr) {
     const animations = [];
     if (arr.length <= 1) return arr;
-    quickSort(arr, 0, arr.length - 1, animations)
-    console.log(animations);
-    return [animations, arr];
+    quickSort(arr, 0, arr.length - 1, animations);
+    return animations;
 }
 
 
@@ -34,10 +33,10 @@ function partition(arr, start, end, animations){
             // Swapping elements
             [arr[i], arr[pivotIndex]] = [arr[pivotIndex], arr[i]];
             // Change colour of switching elements
-            animations.push([i, pivotIndex, COLOUR_CHANGE]);
+            animations.push([i, pivotIndex]);
             // Swapping elements in animation
-            animations.push([i, arr[pivotIndex], MOVE_ELEMENT]);
-            animations.push([pivotIndex, arr[i], MOVE_ELEMENT]);
+            animations.push([i, arr[pivotIndex]]);
+            animations.push([pivotIndex, arr[i]]);
             // Moving to next element
             pivotIndex++;
         }
@@ -46,10 +45,10 @@ function partition(arr, start, end, animations){
     // Putting the pivot value in the middle
     [arr[pivotIndex], arr[end]] = [arr[end], arr[pivotIndex]]
     // Change color of switching elements
-    animations.push([pivotIndex, end, COLOUR_CHANGE]);
+    animations.push([pivotIndex, end]);
     // Swapping elements in animation
-    animations.push([pivotIndex, arr[end], MOVE_ELEMENT]);
-    animations.push([end, arr[pivotIndex], MOVE_ELEMENT]);
+    animations.push([pivotIndex, arr[end]]);
+    animations.push([end, arr[pivotIndex]]);
 
     return pivotIndex;
 }

@@ -1,7 +1,5 @@
-.array-container {
-    position: absolute;
-    left: 100px;
-    /* top: 100px; */
+.item-spacing > button {
+    margin: 8px;
 }
 
 .array-bar {

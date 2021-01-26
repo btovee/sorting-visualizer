@@ -1,11 +1,14 @@
 import './App.css';
 import SortingVisualizer from "./sorting-visualizer/sorting-visualizer";
+import Container from '@material-ui/core/Container';
 
 function App() {
   return (
-      <div className="App">
-        <SortingVisualizer/>
-      </div>
+      <Container fixed>
+          <div className="App">
+            <SortingVisualizer/>
+          </div>
+      </Container>
   );
 }
 
